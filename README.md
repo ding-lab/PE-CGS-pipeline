@@ -14,7 +14,7 @@ git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
 
 ## Updating the pipeline
 
-Due to submodule crazyness, the easiest way to update the pipeline is to remove the repository and reinstall.
+Due to submodule craziness, the easiest way to update the pipeline is to remove the repository and reinstall.
 
 ```bash
 rm -rf pecgs-pipeline
@@ -28,7 +28,7 @@ git pull
 git submodule update submodules/
 ```
 
-This command will sometimes fail due to intermediary files, and is a pain to try and fix. Usually the easier solution is just deleting the repository and reinstalling.
+This command will sometimes fail due to intermediary files, and this is a pain to try and fix. Usually the easier solution is just deleting the repository and reinstalling.
 
 
 ## Overview
@@ -76,9 +76,9 @@ The following tools are incorporated into the pecgs-pipeline:
 
 There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, though more may be available in the future.
 
-The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
+The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-separated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
-**Important: please limit the number of cases in the run list to less than ~10-15 for each run of the pipeline. Cromwell leaves around a lot of temporary files that are quite large and can quickly fill up our labs `/scratch1` allocation if too many cases are run simultaneously. If you have a large number of cases to run, please run them in batches one after another.**
+**Important: please limit the number of cases in the run list to less than ~10-15 for each run of the pipeline. Cromwell leaves around a lot of temporary files that are quite large and can quickly fill up our lab's `/scratch1` allocation if too many cases are run simultaneously. If you have a large number of cases to run, please run them in batches one after another.**
 
 **Important: please do not include spaces or special characters in the run id or case id, as this could lead to issues when the pipeline is naming files. Only use alphanumeric characters (A-Z, 0-9), hyphens (-), and underscores(_).** 
 
@@ -98,11 +98,11 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
 
 + project
-  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy and somaticwrapper. If you want the bed files to be correct, make sure the project name is correct. See the `disease` bullet point for more details.
+  + used in WXS pipelines. Specifies project specific configurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy and somaticwrapper. If you want the bed files to be correct, make sure the project name is correct. See the `disease` bullet point for more details.
 + disease
   + used in WXS pipelines. Specifies the cancer type of a given case. Is used in two places in the pipeline
     + Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
-    + Is used to select the VAF rescue bed file to use with TinDaisy. If the project is PECGS, CHOL, MM, and CHOL are valid diseases and a bed file will be selected specfic to those cancer types that has been made for the PECGS project. If project is TCGA, then all cancer type [abbreviations](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations) in TCGA are valid. Otherwise, a default list of 299 genes from the pancan driver paper will be used. The potential bed files that can be used are [here](https://github.com/estorrs/wombat/tree/master/wombat/beds).
+    + Is used to select the VAF rescue bed file to use with TinDaisy. If the project is PECGS, CHOL, MM, and CHOL are valid diseases and a bed file will be selected specific to those cancer types that has been made for the PECGS project. If project is TCGA, then all cancer type [abbreviations](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations) in TCGA are valid. Otherwise, a default list of 299 genes from the pancan driver paper will be used. The potential bed files that can be used are [here](https://github.com/estorrs/wombat/tree/master/wombat/beds).
 
 For file and directory path inputs, there will be two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
 
@@ -141,7 +141,7 @@ The following pipelines are available:
 
 The pecgs pipelines output a variety of files associated with the various tools incorporated in the pipeline.
 
-The outputs are the following and seperated by pipeline input data type:
+The outputs are the following and separated by pipeline input data type:
 
 + **WXS**
   + DNA-seq alignment (input dependent)
@@ -206,7 +206,7 @@ cd pecgs-pipeline/src/compute1
 
 There are four main steps to running the pecgs pipelines: 1) generation of run directory/scripts required to run the pipeline, 2) removal of large unnecessary intermediate files generated during pipeline run, 3) generation of pipeline run summary files, and 4) moving/copying pipeline run to another location (optional).
 
-Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around ~50 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps accross samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
+Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around ~50 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps across samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
 
 ```bash
 bgmod -L N_JOBS /USERNAME/default
@@ -225,13 +225,13 @@ NOTE: if the directory you intend to use for pipeline outputs is not in `/storag
 
 You should now be inside a running container.
 
-To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute. The RUN_DIR **must** be on `/scratch1`. `/storage1` has cacheing issues that may cause some steps of the pipeline to fail.
+To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute. The RUN_DIR **must** be on `/scratch1`. `/storage1` has caching issues that may cause some steps of the pipeline to fail.
 
 ```bash
 python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR
 ```
 
-NOTE: for additinal arguments to generate_run_commands.py see **Additional arguments to generate_run_commands.py** section. Some of these arguments include being able to specify which compute1 queue to use and how to pass in sequencing info for fastq files.
+NOTE: for additional arguments to generate_run_commands.py see **Additional arguments to generate_run_commands.py** section. Some of these arguments include being able to specify which compute1 queue to use and how to pass in sequencing info for fastq files.
 
 Following execution of this command, a directory should now exist at whatever path was specified for RUN_DIR. Inside that directory you should see one file: `1.run_jobs.sh`. There should also be three directories: `inputs`, `logs`, and `runs`.
 
@@ -288,7 +288,7 @@ There should now be a file called `2.tidy_run.sh` in RUN_DIR.
 
 This file will contain commands to remove all **finished and successfully completed** pipeline runs. If you have multiple runs in your run_list then only runs that finished and completed successfully will have files to be deleted inside `2.tidy_run.sh`.
 
-If you are performing a large number of runs it is usually a good idea to periodically run the above command to clean out intermediarry files, otherwise they may fill up memory in whatever directory you are using to execute your runs.
+If you are performing a large number of runs it is usually a good idea to periodically run the above command to clean out intermediary files, otherwise they may fill up memory in whatever directory you are using to execute your runs.
 
 To run `2.tidy_run.sh`, in a compute1 terminal not inside a running container run this script to delete large intermediary files.
 
@@ -309,10 +309,10 @@ python generate_run_commands.py summarize-run PIPELINE_NAME RUN_LIST RUN_DIR
 After running this command, there should be three new files in RUN_DIR (assuming there are runs that have successfully completed): `analysis_summary.txt`, `run_summary.txt`, and `runlist.txt`.
 
 + `analysis_summary.txt`
-  + A tab-seperated txt file containing output files and various metadata.
+  + A tab-separated txt file containing output files and various metadata.
   + [example analysis summary file](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/summary_files/analysis_summary.txt)
 + `run_summary.txt`
-  + A tab-sperated txt file containing run metadata for each run in the run list.
+  + A tab-separated txt file containing run metadata for each run in the run list.
   + [example run summary file](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/summary_files/run_summary.txt)
 
 Important Note: Only runs that have completed will be in the summary files. i.e. if you are running 10 runs and 4 have completed, outputs for those 4 runs will be included in the summary files, but not the 6 runs that are still ongoing. **If you run this command multiple times throughout a run new UUIDs will be assigned to each output file in analysis_summary.txt**.
@@ -340,6 +340,32 @@ A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pip
 A run directory for the [pecgs_TN_wgs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wgs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at ``.
 
 A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/storage1/fs1/dinglab/Active/Projects/estorrs/wombat/tests/data/pecgs_T_rna_fq/run`.
+
+
+**Alignment-only pipeline**
+
+* Doing a whole-exome alignment, for example, can be accomplished by replacing `cwl/pecgs_workflows/pecgs_TN_wxs_fq.cwl` with `cwl/pecgs_workflows/alignOnly/pecgs_TN_wxs_fq.cwl` and using the `pecgs_TN_wxs_fq` as the pipeline name in Steps 1-4 above.
+
+*   Pseudo-code for running the pipeline manually stepwise:
+
+    First launch the pecgs-pipeline Docker image. Use `estorrs/pecgs-pipeline:0.0.2` unless you are running the summarize-run step, in which case use `estorrs/pecgs-pipeline:0.0.1` instead due to a bug.
+
+       export PROJECT_DIR=/path/to/project/directory
+       export PIPELINE=pecgs_TN_wxs_fq
+       export RUN_LIST=/path/to/your/pecgs_TN_wxs_fq.tsv
+       export RUN_DIR=/path/to/your/run/directory
+       export RUN_LIST_TXT=${RUN_DIR}/runlist.txt
+       export TARGET_DIR=/path/to/where/you/store/pecgs/runs    # Note: RUN_DIR will appear inside TARGET_DIR
+       mkdir -p ${RUN_DIR}
+       cd ${PROJECT_DIR}/pecgs-pipeline/src/compute1
+       ##
+       ## Run one of the commands:
+       ##
+       python generate_run_commands.py make-run  $PIPELINE  $RUN_LIST  $RUN_DIR
+       python generate_run_commands.py tidy-run $PIPELINE $RUN_LIST $RUN_DIR
+       python generate_run_commands.py summarize-run $PIPELINE $RUN_LIST $RUN_DIR
+       python generate_run_commands.py move-run  $PIPELINE   $RUN_LIST_TXT   $RUN_DIR   --target-dir $TARGET_DIR
+
 
 ## Additional arguments to generate_run_commands.py
 
