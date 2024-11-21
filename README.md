@@ -350,21 +350,21 @@ A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipel
 
     First launch the pecgs-pipeline Docker image. Use `estorrs/pecgs-pipeline:0.0.2` unless you are running the summarize-run step, in which case use `estorrs/pecgs-pipeline:0.0.1` instead due to a bug.
 
-       export PROJECT_DIR=/path/to/project/directory
-       export PIPELINE=pecgs_TN_wxs_fq
-       export RUN_LIST=/path/to/your/pecgs_TN_wxs_fq.tsv
-       export RUN_DIR=/path/to/your/run/directory
-       export RUN_LIST_TXT=${RUN_DIR}/runlist.txt
-       export TARGET_DIR=/path/to/where/you/store/pecgs/runs    # Note: RUN_DIR will appear inside TARGET_DIR
-       mkdir -p ${RUN_DIR}
-       cd ${PROJECT_DIR}/pecgs-pipeline/src/compute1
-       ##
-       ## Run one of the commands:
-       ##
-       python generate_run_commands.py make-run  $PIPELINE  $RUN_LIST  $RUN_DIR
-       python generate_run_commands.py tidy-run $PIPELINE $RUN_LIST $RUN_DIR
-       python generate_run_commands.py summarize-run $PIPELINE $RUN_LIST $RUN_DIR
-       python generate_run_commands.py move-run  $PIPELINE   $RUN_LIST_TXT   $RUN_DIR   --target-dir $TARGET_DIR
+        export PROJECT_DIR=/path/to/project/directory
+        export PIPELINE=pecgs_TN_wxs_fq
+        export RUN_LIST=/path/to/your/pecgs_TN_wxs_fq.tsv
+        export RUN_DIR=/path/to/your/run/directory
+        export RUN_LIST_TXT=${RUN_DIR}/runlist.txt
+        export TARGET_DIR=/path/to/where/you/store/pecgs/runs    # Note: RUN_DIR will appear inside TARGET_DIR
+        mkdir -p ${RUN_DIR}
+        cd ${PROJECT_DIR}/pecgs-pipeline/src/compute1
+        ##
+        ## Run one of the commands:
+        ##
+        python generate_run_commands.py make-run  $PIPELINE  $RUN_LIST  $RUN_DIR
+        python generate_run_commands.py tidy-run $PIPELINE $RUN_LIST $RUN_DIR
+        python generate_run_commands.py summarize-run $PIPELINE $RUN_LIST $RUN_DIR
+        python generate_run_commands.py move-run  $PIPELINE   $RUN_LIST_TXT   $RUN_DIR   --target-dir $TARGET_DIR
 
 
 ## Additional arguments to generate_run_commands.py
